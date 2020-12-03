@@ -35,11 +35,11 @@ public class Circle {
 				"Circumference", getCircumference());
 	}
 	
-	public static void Application() {
-		int r = Integer.parseInt(JOptionPane.showInputDialog("Enter radius of circle:"));
-		Circle c = new Circle(r);
-		String print = c.toString();
-		JOptionPane.showMessageDialog(null, print);
-	}
+	//public static void Application() {
+	//	int r = Integer.parseInt(JOptionPane.showInputDialog("Enter radius of circle:"));
+	//	Circle c = new Circle(r);
+	//	String print = c.toString();
+	//	JOptionPane.showMessageDialog(null, print);
+	//}
 	
 }
