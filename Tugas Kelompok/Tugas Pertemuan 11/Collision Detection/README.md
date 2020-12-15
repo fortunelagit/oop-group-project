@@ -86,7 +86,11 @@ Pesan tersebut ditampilkan di akhir permainan, baik saat kita menghancurkan semu
 Di dalam updateAliens()method ini, pertama-tama kita memeriksa apakah ada objek asing yang tersisa di alienslist. Permainan selesai jika listnya kosong. Jika tidak kosong, kita pergi melalui list dan memindahkan semua itemnya. Alien yang dihancurkan dihapus dari list.
 
 
- checkCollisions()method pemeriksaan untuk kemungkinan tabrakan. Pertama, kita memeriksa apakah objek kerajinan bertabrakan dengan salah satu objek alien. Kita mendapatkan persegi panjang objek dengan getBounds()method.  intersects()Method pemeriksaan jika dua persegi panjang berpotongan.
+ checkCollisions()method pemeriksaan untuk kemungkinan tabrakan. 
+
+Pertama, kita memeriksa apakah objek pesawat bertabrakan dengan salah satu objek alien. 
+
+Kita mendapatkan persegi panjang objek dengan getBounds()method.  intersects()Method pemeriksaan jika dua persegi panjang berpotongan.
 ## Alien.java
   
 `public void move () {
