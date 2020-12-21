@@ -2,13 +2,11 @@ package id.ac.its.collideapp;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SpaceShip extends Sprite implements MouseListener, MouseMotionListener{
+public class SpaceShip extends Sprite {
 
     private int dx;
     private int dy;
@@ -53,87 +51,32 @@ public class SpaceShip extends Sprite implements MouseListener, MouseMotionListe
             fire();
         }
 
-        if (key == KeyEvent.VK_LEFT) {
-            dx = -1;
-        }
-
-        if (key == KeyEvent.VK_RIGHT) {
-            dx = 1;
-        }
-
-        if (key == KeyEvent.VK_UP) {
-            dy = -1;
-        }
-
-        if (key == KeyEvent.VK_DOWN) {
-            dy = 1;
-        }
-    }
-
     public void fire() {
         missiles.add(new Missile(x + width, y + height / 2));
     }
 
-    public void keyReleased(KeyEvent e) {
-
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_LEFT) {
-            dx = 0;
-        }
-
-        if (key == KeyEvent.VK_RIGHT) {
-            dx = 0;
-        }
-
-        if (key == KeyEvent.VK_UP) {
-            dy = 0;
-        }
-
-        if (key == KeyEvent.VK_DOWN) {
-            dy = 0;
-        }
+    public void mouseDragged(MouseEvent e) {
+	x = e.getX();
+	y = e.getY();
+	    
+	//Handling apabila mouse keluar frame. Angka didapat dari ukuran lebar frame dikurangi ukuran pesawat
+    	if(x > 370)
+    	{
+    		x = 370;
+    	}
+    	
+    	//Handling apabila mouse keluar frame. Angka didapat dari ukuran tinggi frame dikurangi ukuran pesawat
+    	if(y > 270)
+    	{
+    		y = 270;
+    	}
     }
-    
-    
-    	@Override
-    	public void mouseClicked(MouseEvent event) {
-    		fire();
-    	}
-    	
-    	@Override
-    	public void mousePressed(MouseEvent event) {
-    		
-    	}
-    	
-    	@Override
-    	public void mouseDragged(MouseEvent event) {
-	    	dx = event.getX();
-	    	dy = event.getY();
-	    }
-    	
-    	@Override
-    	public void mouseMoved(MouseEvent event) {
-    		x = 0;
-	    	y = 0;
-    	}
+	    
+    public void mouseReleased(MouseEvent e) {
 
-		@Override
-		public void mouseReleased(MouseEvent event) {
-			dx = 0;
-	    	dy = 0;
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent event) {
-			dx = 0;
-	    	dy = 0;
-		}
-
-		@Override
-		public void mouseExited(MouseEvent event) {
-			dx = 0;
-	    	dy = 0;
-		}
-    
-}
+        dx = 0;
+        dy = 0;
+    }
+    	
+    	
+    	
