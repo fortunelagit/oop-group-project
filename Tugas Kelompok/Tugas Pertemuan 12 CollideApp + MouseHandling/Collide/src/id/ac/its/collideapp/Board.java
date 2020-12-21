@@ -53,6 +53,7 @@ public class Board extends JPanel implements ActionListener {
 
         addKeyListener(new TAdapter());
         addMouseListener(new MAdapter());
+        addMouseMotionListener(new MAdapter());
         setFocusable(true);
         setBackground(Color.BLACK);
         ingame = true;
@@ -231,12 +232,6 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private class TAdapter extends KeyAdapter {
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            spaceship.keyReleased(e);
-        }
-
         @Override
         public void keyPressed(KeyEvent e) {
             spaceship.keyPressed(e);
@@ -245,32 +240,15 @@ public class Board extends JPanel implements ActionListener {
     
     
     private class MAdapter extends MouseAdapter{
-    	public void mouseClicked(MouseEvent e) {
-    		spaceship.mouseClicked(e);
-    	}
-
-        public void mousePressed(MouseEvent e) {
-        	spaceship.mousePressed(e);
-        }
-
+       
+         @Override
         public void mouseReleased(MouseEvent e) {
         	spaceship.mouseReleased(e);
         }
-        
-        public void mouseEntered(MouseEvent e) {
-        	spaceship.mouseEntered(e);
-        }
-
-        public void mouseExited(MouseEvent e) {
-        	spaceship.mouseExited(e);
-        }
-
+   
+         @Override
         public void mouseDragged(MouseEvent e){
         	spaceship.mouseDragged(e);
-        }
-
-        public void mouseMoved(MouseEvent e){
-        	spaceship.mouseMoved(e);
         }
     }
 }
