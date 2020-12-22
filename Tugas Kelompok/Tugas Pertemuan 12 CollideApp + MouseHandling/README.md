@@ -133,8 +133,9 @@ Class ini adalah class utama yang digunakan untuk menjalankan program.
 # Dokumentasi
 
 ### Diagram class
-  ![](https://raw.githubusercontent.com/fortunelagit/oop-group-project/main/Tugas%20Kelompok/Tugas%20Pertemuan%2011/Collision%20Detection/diagram-collision.jpg)
+  ![](https://raw.githubusercontent.com/fortunelagit/oop-group-project/d130d2a3aa8f7210d9e811c2378138c956539a5e/Tugas%20Kelompok/Tugas%20Pertemuan%2012%20CollideApp%20%2B%20MouseHandling/collision%20detection%20mouse%20handling%20diagram.jpg)
 
-### Screenshot game  
-  ![](https://raw.githubusercontent.com/fortunelagit/oop-group-project/main/Tugas%20Kelompok/Tugas%20Pertemuan%2011/Collision%20Detection/ss-collision.jpg)
+### Screen-recording game  
+  Pada link berikut
+  https://youtu.be/V9MFcdo0jLo
   
