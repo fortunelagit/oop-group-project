@@ -107,3 +107,6 @@ Class ini adalah class utama yang digunakan untuk menjalankan program.
 
   ![](https://raw.githubusercontent.com/fortunelagit/oop-group-project/main/Tugas%20Kelompok/Tugas%20Pertemuan%2012%20CollideApp%20%2B%20MouseHandling/collision%20detection%20mouse%20handling%20diagram.jpg)
 
+
+##  Video
+https://youtu.be/V9MFcdo0jLo
