@@ -24,10 +24,22 @@ public class Breakout extends JFrame {
 
     public static void main(String[] args) {
         
-        EventQueue.invokeLater(() -> {
-
-            var game = new Breakout();
-            game.setVisible(true);
-        });
+        String[] options = {"Play", "High Scores", "Quit"};
+    	int choice = JOptionPane.showOptionDialog(null, "Smash everything in your sight!", 
+    				"Breakout Game",
+                    JOptionPane.DEFAULT_OPTION, 
+                    JOptionPane.PLAIN_MESSAGE, null, 
+                    options, options[0]);
+    	
+    	switch(choice) {
+    		case 0:	EventQueue.invokeLater(() -> {
+                	var game = new Breakout();
+                	game.setVisible(true);
+    				});
+    				break;
+    				//1 for high score
+    		case 1: 
+    	}
+        
     }
 }
