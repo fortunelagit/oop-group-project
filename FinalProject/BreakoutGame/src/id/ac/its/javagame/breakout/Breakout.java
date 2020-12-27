@@ -23,7 +23,7 @@ public class Breakout extends JFrame {
     }
 
     public static void main(String[] args) {
-        
+        //using JOptionPane to display game option
         String[] options = {"Play", "High Scores", "Quit"};
     	int choice = JOptionPane.showOptionDialog(null, "Smash everything in your sight!", 
     				"Breakout Game",
