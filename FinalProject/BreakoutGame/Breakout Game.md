@@ -184,5 +184,5 @@ Kelas Breakout berisikan fungsi main.
 
 ## Source
 
-[1]: http://zetcode.com/javagames/breakout/
+[http://zetcode.com/javagames/breakout/]
 
