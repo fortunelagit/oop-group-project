@@ -1,5 +1,6 @@
 package id.ac.its.javagame.breakout;
 
+
 import javax.swing.ImageIcon;
 
 public class Ball extends Sprite {
@@ -38,7 +39,7 @@ public class Ball extends Sprite {
             setXDir(1);
         }
 
-        if (x == Commons.WIDTH - imageWidth) {
+        if (x == BoardState.WIDTH - imageWidth) {
 
             System.out.println(imageWidth);
             setXDir(-1);
@@ -52,8 +53,8 @@ public class Ball extends Sprite {
 
     private void resetState() {
 
-        x = Commons.INIT_BALL_X;
-        y = Commons.INIT_BALL_Y;
+        x = BoardState.INIT_BALL_X;
+        y = BoardState.INIT_BALL_Y;
     }
 
     void setXDir(int x) {
