@@ -37,9 +37,9 @@ public class Paddle extends Sprite  {
             x = 0;
         }
 
-        if (x >= Commons.WIDTH - imageWidth) {
+        if (x >= BoardState.WIDTH - imageWidth) {
 
-            x = Commons.WIDTH - imageWidth;
+            x = BoardState.WIDTH - imageWidth;
         }
     }
 
@@ -75,16 +75,15 @@ public class Paddle extends Sprite  {
 
     public void mouseMoved(MouseEvent e) {
     	x = e.getX();
-    	y = Commons.INIT_PADDLE_Y;
-    	if (x > Commons.WIDTH - imageWidth) {
-            x = Commons.WIDTH - imageWidth;
+    	y = BoardState.INIT_PADDLE_Y;
+    	if (x > BoardState.WIDTH - imageWidth) {
+            x = BoardState.WIDTH - imageWidth;
         }
     }
     
     private void resetState() {
 
-        x = Commons.INIT_PADDLE_X;
-        y = Commons.INIT_PADDLE_Y;
+        x = BoardState.INIT_PADDLE_X;
+        y = BoardState.INIT_PADDLE_Y;
     }
 }
-
