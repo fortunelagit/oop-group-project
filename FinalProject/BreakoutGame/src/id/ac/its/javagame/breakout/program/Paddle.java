@@ -1,4 +1,4 @@
-package id.ac.its.javagame.breakout;
+package id.ac.its.javagame.breakout.program;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
