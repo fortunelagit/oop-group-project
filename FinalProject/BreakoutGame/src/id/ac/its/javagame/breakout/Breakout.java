@@ -1,45 +1,25 @@
 package id.ac.its.javagame.breakout;
 
+
 import javax.swing.JFrame;
-import java.awt.EventQueue;
+
 
 @SuppressWarnings("serial")
 public class Breakout extends JFrame {
 
-    public Breakout() {
+    public Breakout(int n_of_bricks, int period) {
         
-        initUI();
+        initUI(n_of_bricks, period);
     }
     
-    private void initUI() {
+    private void initUI(int n_of_bricks, int period) {
 
-        add(new Board());
+        add(new Board(n_of_bricks, period));
         setTitle("Breakout");
-
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
         pack();
     }
-
-    public static void main(String[] args) {
-        //using JOptionPane to display game option
-        String[] options = {"Play", "High Scores", "Quit"};
-    	int choice = JOptionPane.showOptionDialog(null, "Smash everything in your sight!", 
-    				"Breakout Game",
-                    JOptionPane.DEFAULT_OPTION, 
-                    JOptionPane.PLAIN_MESSAGE, null, 
-                    options, options[0]);
-    	
-    	switch(choice) {
-    		case 0:	EventQueue.invokeLater(() -> {
-                	var game = new Breakout();
-                	game.setVisible(true);
-    				});
-    				break;
-    				//1 for high score
-    		case 1: 
-    	}
-        
-    }
+    
 }
