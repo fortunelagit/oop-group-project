@@ -27,9 +27,13 @@ public class Board extends JPanel {
     private Paddle paddle;
     private Brick[] bricks;
     private boolean inGame = true;
+    private int n_of_bricks;
+    private int period;
 
-    public Board() {
-
+    
+	public Board(int n_of_bricks, int period) {
+		this.n_of_bricks = n_of_bricks;
+		this.period = period;
         initBoard();
     }
 
@@ -39,21 +43,21 @@ public class Board extends JPanel {
         addMouseListener(new MAdapter());
         addMouseMotionListener(new MAdapter());
         setFocusable(true);
-        setPreferredSize(new Dimension(Commons.WIDTH, Commons.HEIGHT));
+        setPreferredSize(new Dimension(BoardState.WIDTH, BoardState.HEIGHT));
 
         gameInit();
     }
 
     private void gameInit() {
 
-        bricks = new Brick[Commons.N_OF_BRICKS];
+        bricks = new Brick[n_of_bricks];
 
         ball = new Ball();
         paddle = new Paddle();
 
         int k = 0;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < (n_of_bricks/6); i++) {
 
             for (int j = 0; j < 6; j++) {
 
@@ -62,7 +66,7 @@ public class Board extends JPanel {
             }
         }
 
-        timer = new Timer(Commons.PERIOD, new GameCycle());
+        timer = new Timer(period, new GameCycle());
         timer.start();
     }
 
@@ -96,7 +100,7 @@ public class Board extends JPanel {
         g2d.drawImage(paddle.getImage(), paddle.getX(), paddle.getY(),
                 paddle.getImageWidth(), paddle.getImageHeight(), this);
 
-        for (int i = 0; i < Commons.N_OF_BRICKS; i++) {
+        for (int i = 0; i < n_of_bricks; i++) {
 
             if (!bricks[i].isDestroyed()) {
 
@@ -115,8 +119,8 @@ public class Board extends JPanel {
         g2d.setColor(Color.BLACK);
         g2d.setFont(font);
         g2d.drawString(message,
-                (Commons.WIDTH - fontMetrics.stringWidth(message)) / 2,
-                Commons.WIDTH / 2);
+                (BoardState.WIDTH - fontMetrics.stringWidth(message)) / 2,
+                BoardState.WIDTH / 2);
     }
 
     private class TAdapter extends KeyAdapter {
@@ -167,19 +171,19 @@ public class Board extends JPanel {
 
     private void checkCollision() {
 
-        if (ball.getRect().getMaxY() > Commons.BOTTOM_EDGE) {
+        if (ball.getRect().getMaxY() > BoardState.BOTTOM_EDGE) {
 
             stopGame();
         }
 
-        for (int i = 0, j = 0; i < Commons.N_OF_BRICKS; i++) {
+        for (int i = 0, j = 0; i < n_of_bricks; i++) {
 
             if (bricks[i].isDestroyed()) {
 
                 j++;
             }
 
-            if (j == Commons.N_OF_BRICKS) {
+            if (j == n_of_bricks) {
 
                 message = "Victory";
                 stopGame();
@@ -227,7 +231,7 @@ public class Board extends JPanel {
             }
         }
 
-        for (int i = 0; i < Commons.N_OF_BRICKS; i++) {
+        for (int i = 0; i < n_of_bricks; i++) {
 
             if ((ball.getRect()).intersects(bricks[i].getRect())) {
 
