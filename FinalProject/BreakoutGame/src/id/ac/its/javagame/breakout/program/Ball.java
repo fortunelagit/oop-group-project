@@ -41,7 +41,6 @@ public class Ball extends Sprite {
 
         if (x == BoardState.WIDTH - imageWidth) {
 
-            System.out.println(imageWidth);
             setXDir(-1);
         }
 
