@@ -44,6 +44,7 @@ public class ChooseLevel {
                 	var game = new Breakout(24, 12);
                 	game.setVisible(true);
     				});
+			shell.setVisible(false);
 			}
 		});
 		
@@ -60,6 +61,7 @@ public class ChooseLevel {
                 	var game = new Breakout(36, 9);
                 	game.setVisible(true);
     				});
+			shell.setVisible(false);
 			}
 		});
 		
@@ -76,6 +78,7 @@ public class ChooseLevel {
                 	var game = new Breakout(48, 7);
                 	game.setVisible(true);
     				});
+			shell.setVisible(false);
 			}
 		});
 		
