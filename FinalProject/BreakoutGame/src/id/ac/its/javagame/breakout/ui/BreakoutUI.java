@@ -45,6 +45,7 @@ public class BreakoutUI {
 			public void widgetSelected(SelectionEvent event) {
 				try {
 					ChooseLevel window = new ChooseLevel();
+					shlBreakoutGame.setVisible(false);
 					window.open();
 				} catch (Exception e) {
 					e.printStackTrace();
