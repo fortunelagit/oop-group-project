@@ -29,9 +29,27 @@ public class Board extends JPanel {
     private boolean inGame = true;
     private int n_of_bricks;
     private int period;
+    private int bricksDestroyed = 0;
+    private int difficulty;
+    
+    private final String[] difficulties = {"Easy", "Medium", "Hard"};
+
+    private final String HIGH_SCORE_EASY = "High Score " + difficulties[0] + ": " ;
+    private final String HIGH_SCORE_MEDIUM = "High Score " + difficulties[1] + ": ";
+    private final String HIGH_SCORE_HARD = "High Score " + difficulties[2] + ": ";
+    private final String GAMES_PLAYED = "Games Played: ";
+    private final String BRICKS_DESTROYED = "Bricks Destroyed: ";
+
+    private final String dataID[] = {HIGH_SCORE_EASY, HIGH_SCORE_MEDIUM, 
+			HIGH_SCORE_HARD, GAMES_PLAYED, BRICKS_DESTROYED};
+
+    private final int[] data = new int[dataID.length];
+
+    private final int TOTAL_GAMES_PLAYED_LOC = 3;
+    private final int TOTAL_BRICKS_DESTROYED = 4;
 
     
-	public Board(int n_of_bricks, int period) {
+    public Board(int n_of_bricks, int period) {
 		this.n_of_bricks = n_of_bricks;
 		this.period = period;
         initBoard();
@@ -67,7 +85,9 @@ public class Board extends JPanel {
         }
 
         timer = new Timer(period, new GameCycle());
+	data[TOTAL_GAMES_PLAYED_LOC]++;
         timer.start();
+	saveData();
     }
 
     @Override
@@ -112,7 +132,30 @@ public class Board extends JPanel {
     }
 
     private void gameFinished(Graphics2D g2d) {
-
+        
+	/*g2d.setColor(Color.red);
+        Font font = new Font("Monospaced", Font.PLAIN, Commons.WIDTH / 10);
+        FontRenderContext frc = g2d.getFontRenderContext();
+        GlyphVector gv = font.createGlyphVector(frc, message);
+        g2d.drawGlyphVector(gv,
+                Commons.WIDTH / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
+                Commons.HEIGHT * 7 / 20 - ((int) gv.getVisualBounds().getHeight() / 2));
+        
+    	 g2d.setColor(Color.green);
+         Font font = new Font("Verdana", Font.PLAIN, Commons.WIDTH / 25);
+         FontRenderContext frc = g2d.getFontRenderContext();
+         GlyphVector gv = font.createGlyphVector(frc, "Difficulty: " + difficulty);
+         g2d.drawGlyphVector(gv,
+        		 Commons.WIDTH / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
+        		 Commons.HEIGHT * 9 / 20 - ((int) gv.getVisualBounds().getHeight() / 2));
+         
+         Font font = new Font("Verdana", Font.PLAIN, Commons.WIDTH / 25);
+         FontRenderContext frc = g2d.getFontRenderContext();
+         GlyphVector gv = font.createGlyphVector(frc, "Score: " + applesEaten);
+         g2d.drawGlyphVector(gv,
+        		 Commons.WIDTH / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
+        		 Commons.HEIGHT * 11 / 20 - ((int) gv.getVisualBounds().getHeight() / 2)); */
+    	
         var font = new Font("Verdana", Font.BOLD, 18);
         FontMetrics fontMetrics = this.getFontMetrics(font);
 
@@ -172,7 +215,8 @@ public class Board extends JPanel {
     private void checkCollision() {
 
         if (ball.getRect().getMaxY() > BoardState.BOTTOM_EDGE) {
-
+            data[difficulty] = Math.max(bricksDestroyed, data[difficulty]);
+            saveData();
             stopGame();
         }
 
@@ -181,11 +225,15 @@ public class Board extends JPanel {
             if (bricks[i].isDestroyed()) {
 
                 j++;
+		bricksDestroyed++;
+                data[TOTAL_BRICKS_DESTROYED]++;
             }
 
             if (j == n_of_bricks) {
 
                 message = "Victory";
+		data[difficulty] = Math.max(bricksDestroyed, data[difficulty]);
+                saveData();
                 stopGame();
             }
         }
@@ -267,5 +315,38 @@ public class Board extends JPanel {
                 }
             }
         }
+    }
+    public void loadData() {
+        Path path = Paths.get("./BreakoutData.txt");
+        String line;
+        int dataIndex = 0;
+        try (InputStream in = Files.newInputStream(path)) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            while ((line = reader.readLine()) != null) {
+                data[dataIndex] = Integer.parseInt(line.replaceAll(dataID[dataIndex], ""));
+                dataIndex++;
+            }
+            reader.close();
+        } catch (Exception ex) {
+            Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void saveData() {
+        for (int datum : data) {
+            System.out.println(datum);
+        }
+        Path path = Paths.get("./BreakoutData.txt");
+        try (OutputStream out = Files.newOutputStream(path)) {
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
+            for (int i = 0; i < data.length; i++) {
+                writer.write(dataID[i] + Integer.toString(data[i]));
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }
