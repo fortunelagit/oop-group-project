@@ -1,0 +1,5 @@
+High Score Easy: 0
+High Score Medium: 0
+High Score Hard: 0
+Games Played: 5
+Bricks Destroyed: 0
