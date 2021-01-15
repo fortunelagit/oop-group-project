@@ -162,16 +162,16 @@ public class Board extends JPanel {
                 Commons.HEIGHT * 7 / 20 - ((int) gv.getVisualBounds().getHeight() / 2));
         
     	 g2d.setColor(Color.green);
-         Font font = new Font("Verdana", Font.PLAIN, Commons.WIDTH / 25);
-         FontRenderContext frc = g2d.getFontRenderContext();
-         GlyphVector gv = font.createGlyphVector(frc, "Difficulty: " + difficulty);
+         font = new Font("Verdana", Font.PLAIN, Commons.WIDTH / 25);
+         frc = g2d.getFontRenderContext();
+         gv = font.createGlyphVector(frc, "Difficulty: " + difficulty);
          g2d.drawGlyphVector(gv,
         		 Commons.WIDTH / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
         		 Commons.HEIGHT * 9 / 20 - ((int) gv.getVisualBounds().getHeight() / 2));
          
-         Font font = new Font("Verdana", Font.PLAIN, Commons.WIDTH / 25);
-         FontRenderContext frc = g2d.getFontRenderContext();
-         GlyphVector gv = font.createGlyphVector(frc, "Score: " + bricksDestroyed);
+         font = new Font("Verdana", Font.PLAIN, Commons.WIDTH / 25);
+         frc = g2d.getFontRenderContext();
+         gv = font.createGlyphVector(frc, "Score: " + bricksDestroyed);
          g2d.drawGlyphVector(gv,
         		 Commons.WIDTH / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
         		 Commons.HEIGHT * 11 / 20 - ((int) gv.getVisualBounds().getHeight() / 2)); 
@@ -328,43 +328,50 @@ public class Board extends JPanel {
         }
     }
     
+    Clip gameOverSound;
+    Clip brickCollisionSound;
+    Clip gameMusicSound;
+    Clip gameWinSound;
+    Clip paddleCollisionSound;
+    Clip wallCollisionSound;
+	
     private void initSounds() {
         try {
             URL url = this.getClass().getClassLoader().getResource("sound/gameOver.wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
-            gameOverSound = AudioSystem.getClip();
+            Clip gameOverSound = AudioSystem.getClip();
             gameOverSound.open(audioIn);
 
             url = this.getClass().getClassLoader().getResource("sound/BrickCollission.wav");
             audioIn = AudioSystem.getAudioInputStream(url);
-            brickCollisionSound = AudioSystem.getClip();
+            Clip brickCollisionSound = AudioSystem.getClip();
             brickCollisionSound.open(audioIn);
 
             url = this.getClass().getClassLoader().getResource("sound/gameMusic.wav");
             audioIn = AudioSystem.getAudioInputStream(url);
-            gameMusicSound = AudioSystem.getClip();
+            Clip gameMusicSound = AudioSystem.getClip();
             gameMusicSound.open(audioIn);
             
             url = this.getClass().getClassLoader().getResource("sound/gameWin.wav");
             audioIn = AudioSystem.getAudioInputStream(url);
-            gameWinSound = AudioSystem.getClip();
+            Clip gameWinSound = AudioSystem.getClip();
             gameWinSound.open(audioIn);
             
             url = this.getClass().getClassLoader().getResource("sound/PaddleCollision.wav");
             audioIn = AudioSystem.getAudioInputStream(url);
-            paddleCollisionSound = AudioSystem.getClip();
+            Clip paddleCollisionSound = AudioSystem.getClip();
             paddleCollisionSound.open(audioIn);
             
             url = this.getClass().getClassLoader().getResource("sound/WallCollision.wav");
             audioIn = AudioSystem.getAudioInputStream(url);
-            wallCollisionSound = AudioSystem.getClip();
+            Clip wallCollisionSound = AudioSystem.getClip();
             wallCollisionSound.open(audioIn);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
         }
     }
     
     public void playMusic() {
-        gameMusicSound.setMicrosecondPosition(0);
+        //gameMusicSound.setMicrosecondPosition(0);
         gameMusicSound.loop(100);
         gameMusicSound.start();
     }
