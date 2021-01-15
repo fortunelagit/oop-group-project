@@ -1,5 +1,10 @@
 package id.ac.its.javagame.breakout.program;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sql.CommonDataSource;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.Color;
@@ -17,6 +22,21 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @SuppressWarnings("serial")
 public class Board extends JPanel {
@@ -29,30 +49,31 @@ public class Board extends JPanel {
     private boolean inGame = true;
     private int n_of_bricks;
     private int period;
-    private int bricksDestroyed = 0;
-    private int difficulty;
-    
-    private final String[] difficulties = {"Easy", "Medium", "Hard"};
+	private int bricksDestroyed = 0;
+	private int difficulty;
+	
+	private final String[] difficulties = {"Easy", "Medium", "Hard"};
 
-    private final String HIGH_SCORE_EASY = "High Score " + difficulties[0] + ": " ;
-    private final String HIGH_SCORE_MEDIUM = "High Score " + difficulties[1] + ": ";
-    private final String HIGH_SCORE_HARD = "High Score " + difficulties[2] + ": ";
-    private final String GAMES_PLAYED = "Games Played: ";
-    private final String BRICKS_DESTROYED = "Bricks Destroyed: ";
+	private final String HIGH_SCORE_EASY = "High Score " + difficulties[0] + ": " ;
+	private final String HIGH_SCORE_MEDIUM = "High Score " + difficulties[1] + ": ";
+	private final String HIGH_SCORE_HARD = "High Score " + difficulties[2] + ": ";
+	private final String GAMES_PLAYED = "Games Played: ";
+	private final String BRICKS_DESTROYED = "Bricks Destroyed: ";
 
-    private final String dataID[] = {HIGH_SCORE_EASY, HIGH_SCORE_MEDIUM, 
+	private final String dataID[] = {HIGH_SCORE_EASY, HIGH_SCORE_MEDIUM, 
 			HIGH_SCORE_HARD, GAMES_PLAYED, BRICKS_DESTROYED};
 
-    private final int[] data = new int[dataID.length];
+	private final int[] data = new int[dataID.length];
 
-    private final int TOTAL_GAMES_PLAYED_LOC = 3;
-    private final int TOTAL_BRICKS_DESTROYED = 4;
+	private final int TOTAL_GAMES_PLAYED_LOC = 3;
+	private final int TOTAL_BRICKS_DESTROYED = 4;
 
-    
-    public Board(int n_of_bricks, int period) {
+	public Board(int n_of_bricks, int period) {
+		loadData();
 		this.n_of_bricks = n_of_bricks;
 		this.period = period;
         initBoard();
+        initSounds();
     }
 
     private void initBoard() {
@@ -61,7 +82,7 @@ public class Board extends JPanel {
         addMouseListener(new MAdapter());
         addMouseMotionListener(new MAdapter());
         setFocusable(true);
-        setPreferredSize(new Dimension(BoardState.WIDTH, BoardState.HEIGHT));
+        setPreferredSize(new Dimension(Commons.WIDTH, Commons.HEIGHT));
 
         gameInit();
     }
@@ -83,11 +104,12 @@ public class Board extends JPanel {
                 k++;
             }
         }
-
+        
+        playMusic();
         timer = new Timer(period, new GameCycle());
-	data[TOTAL_GAMES_PLAYED_LOC]++;
+        data[TOTAL_GAMES_PLAYED_LOC]++;
         timer.start();
-	saveData();
+        loadData();
     }
 
     @Override
@@ -132,8 +154,8 @@ public class Board extends JPanel {
     }
 
     private void gameFinished(Graphics2D g2d) {
-        
-	/*g2d.setColor(Color.red);
+    	
+    	/*g2d.setColor(Color.red);
         Font font = new Font("Monospaced", Font.PLAIN, Commons.WIDTH / 10);
         FontRenderContext frc = g2d.getFontRenderContext();
         GlyphVector gv = font.createGlyphVector(frc, message);
@@ -156,14 +178,15 @@ public class Board extends JPanel {
         		 Commons.WIDTH / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
         		 Commons.HEIGHT * 11 / 20 - ((int) gv.getVisualBounds().getHeight() / 2)); */
     	
-        var font = new Font("Verdana", Font.BOLD, 18);
-        FontMetrics fontMetrics = this.getFontMetrics(font);
+    	 var font = new Font("Verdana", Font.BOLD, 18);
+         FontMetrics fontMetrics = this.getFontMetrics(font);
 
-        g2d.setColor(Color.BLACK);
-        g2d.setFont(font);
-        g2d.drawString(message,
-                (BoardState.WIDTH - fontMetrics.stringWidth(message)) / 2,
-                BoardState.WIDTH / 2);
+         g2d.setColor(Color.BLACK);
+         g2d.setFont(font);
+         g2d.drawString(message,
+                 (Commons.WIDTH - fontMetrics.stringWidth(a)) / 2,
+                 Commons.WIDTH / 2);
+         
     }
 
     private class TAdapter extends KeyAdapter {
@@ -214,10 +237,14 @@ public class Board extends JPanel {
 
     private void checkCollision() {
 
-        if (ball.getRect().getMaxY() > BoardState.BOTTOM_EDGE) {
-            data[difficulty] = Math.max(bricksDestroyed, data[difficulty]);
-            saveData();
+        if (ball.getRect().getMaxY() > Commons.BOTTOM_EDGE) {
+        	
+        	data[difficulty] = Math.max(bricksDestroyed, data[difficulty]);
+        	saveData();
+        	stopMusic();
+        	playGameOverSound();
             stopGame();
+            
         }
 
         for (int i = 0, j = 0; i < n_of_bricks; i++) {
@@ -225,21 +252,26 @@ public class Board extends JPanel {
             if (bricks[i].isDestroyed()) {
 
                 j++;
-		bricksDestroyed++;
+                bricksDestroyed++;
                 data[TOTAL_BRICKS_DESTROYED]++;
+                playEatAppleSound();
+                
             }
 
             if (j == n_of_bricks) {
 
                 message = "Victory";
-		data[difficulty] = Math.max(bricksDestroyed, data[difficulty]);
+                data[difficulty] = Math.max(bricksDestroyed, data[difficulty]);
                 saveData();
+                playEatAppleSound();
+                playGameOverSound();
                 stopGame();
             }
         }
 
         if ((ball.getRect()).intersects(paddle.getRect())) {
-
+        	
+        	playEatAppleSound();
             int paddleLPos = (int) paddle.getRect().getMinX();
             int ballLPos = (int) ball.getRect().getMinX();
 
@@ -282,7 +314,8 @@ public class Board extends JPanel {
         for (int i = 0; i < n_of_bricks; i++) {
 
             if ((ball.getRect()).intersects(bricks[i].getRect())) {
-
+            	
+            	playEatAppleSound();
                 int ballLeft = (int) ball.getRect().getMinX();
                 int ballHeight = (int) ball.getRect().getHeight();
                 int ballWidth = (int) ball.getRect().getWidth();
@@ -316,6 +349,47 @@ public class Board extends JPanel {
             }
         }
     }
+    
+    private void initSounds() {
+        try {
+            URL url = this.getClass().getClassLoader().getResource("sound/gameOver.wav");
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+            gameOverSound = AudioSystem.getClip();
+            gameOverSound.open(audioIn);
+
+            url = this.getClass().getClassLoader().getResource("sound/eatApple.wav");
+            audioIn = AudioSystem.getAudioInputStream(url);
+            eatAppleSound = AudioSystem.getClip();
+            eatAppleSound.open(audioIn);
+
+            url = this.getClass().getClassLoader().getResource("sound/gameMusic.wav");
+            audioIn = AudioSystem.getAudioInputStream(url);
+            gameMusicSound = AudioSystem.getClip();
+            gameMusicSound.open(audioIn);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+        }
+    }
+    
+    public void playMusic() {
+        gameMusicSound.setMicrosecondPosition(0);
+        gameMusicSound.loop(100);
+        gameMusicSound.start();
+    }
+
+    public void stopMusic() {
+        gameMusicSound.stop();
+    }
+    
+    public void playGameOverSound() {
+        gameOverSound.setMicrosecondPosition(0);
+        gameOverSound.start();
+    }
+
+    public void playEatAppleSound() {
+        eatAppleSound.setMicrosecondPosition(0);
+        eatAppleSound.start();
+    }
+    
     public void loadData() {
         Path path = Paths.get("./BreakoutData.txt");
         String line;
