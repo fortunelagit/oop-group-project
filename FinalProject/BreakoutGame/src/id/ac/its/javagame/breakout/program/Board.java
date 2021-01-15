@@ -47,26 +47,26 @@ public class Board extends JPanel {
     private boolean inGame = true;
     private int n_of_bricks;
     private int period;
-	private int bricksDestroyed = 0;
-	private int difficulty;
+    private int bricksDestroyed = 0;
+    private int difficulty;
 	
-	private final String[] difficulties = {"Easy", "Medium", "Hard"};
+    private final String[] difficulties = {"Easy", "Medium", "Hard"};
 
-	private final String HIGH_SCORE_EASY = "High Score " + difficulties[0] + ": " ;
-	private final String HIGH_SCORE_MEDIUM = "High Score " + difficulties[1] + ": ";
-	private final String HIGH_SCORE_HARD = "High Score " + difficulties[2] + ": ";
-	private final String GAMES_PLAYED = "Games Played: ";
-	private final String BRICKS_DESTROYED = "Bricks Destroyed: ";
+    private final String HIGH_SCORE_EASY = "High Score " + difficulties[0] + ": " ;
+    private final String HIGH_SCORE_MEDIUM = "High Score " + difficulties[1] + ": ";
+    private final String HIGH_SCORE_HARD = "High Score " + difficulties[2] + ": ";
+    private final String GAMES_PLAYED = "Games Played: ";
+    private final String BRICKS_DESTROYED = "Bricks Destroyed: ";
 
-	private final String dataID[] = {HIGH_SCORE_EASY, HIGH_SCORE_MEDIUM, 
+    private final String dataID[] = {HIGH_SCORE_EASY, HIGH_SCORE_MEDIUM, 
 			HIGH_SCORE_HARD, GAMES_PLAYED, BRICKS_DESTROYED};
 
-	private final int[] data = new int[dataID.length];
+    private final int[] data = new int[dataID.length];
 
-	private final int TOTAL_GAMES_PLAYED_LOC = 3;
-	private final int TOTAL_BRICKS_DESTROYED = 4;
+    private final int TOTAL_GAMES_PLAYED_LOC = 3;
+    private final int TOTAL_BRICKS_DESTROYED = 4;
 
-	public Board(int n_of_bricks, int period) {
+    public Board(int n_of_bricks, int period) {
 	loadData();
 	this.n_of_bricks = n_of_bricks;
 	this.period = period;
@@ -171,7 +171,7 @@ public class Board extends JPanel {
          
          Font font = new Font("Verdana", Font.PLAIN, Commons.WIDTH / 25);
          FontRenderContext frc = g2d.getFontRenderContext();
-         GlyphVector gv = font.createGlyphVector(frc, "Score: " + applesEaten);
+         GlyphVector gv = font.createGlyphVector(frc, "Score: " + bricksDestroyed);
          g2d.drawGlyphVector(gv,
         		 Commons.WIDTH / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
         		 Commons.HEIGHT * 11 / 20 - ((int) gv.getVisualBounds().getHeight() / 2)); 
