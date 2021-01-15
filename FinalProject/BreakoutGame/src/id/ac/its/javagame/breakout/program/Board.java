@@ -20,11 +20,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-<<<<<<< HEAD
-=======
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
->>>>>>> ef02dce76b2bbc9adcc731498f2815e12cc08ea2
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.io.BufferedReader;
@@ -72,9 +67,9 @@ public class Board extends JPanel {
 	private final int TOTAL_BRICKS_DESTROYED = 4;
 
 	public Board(int n_of_bricks, int period) {
-		loadData();
-		this.n_of_bricks = n_of_bricks;
-		this.period = period;
+	loadData();
+	this.n_of_bricks = n_of_bricks;
+	this.period = period;
         initBoard();
         initSounds();
     }
@@ -112,11 +107,7 @@ public class Board extends JPanel {
         timer = new Timer(period, new GameCycle());
         data[TOTAL_GAMES_PLAYED_LOC]++;
         timer.start();
-<<<<<<< HEAD
         saveData();
-=======
-        loadData();
->>>>>>> ef02dce76b2bbc9adcc731498f2815e12cc08ea2
     }
 
     @Override
@@ -162,11 +153,7 @@ public class Board extends JPanel {
 
     private void gameFinished(Graphics2D g2d) {
     	
-<<<<<<< HEAD
     	g2d.setColor(Color.red);
-=======
-    	/*g2d.setColor(Color.red);
->>>>>>> ef02dce76b2bbc9adcc731498f2815e12cc08ea2
         Font font = new Font("Monospaced", Font.PLAIN, Commons.WIDTH / 10);
         FontRenderContext frc = g2d.getFontRenderContext();
         GlyphVector gv = font.createGlyphVector(frc, message);
@@ -187,21 +174,7 @@ public class Board extends JPanel {
          GlyphVector gv = font.createGlyphVector(frc, "Score: " + applesEaten);
          g2d.drawGlyphVector(gv,
         		 Commons.WIDTH / 2 - ((int) gv.getVisualBounds().getWidth() / 2),
-<<<<<<< HEAD
-        		 Commons.HEIGHT * 11 / 20 - ((int) gv.getVisualBounds().getHeight() / 2));         
-=======
-        		 Commons.HEIGHT * 11 / 20 - ((int) gv.getVisualBounds().getHeight() / 2)); */
-    	
-    	 var font = new Font("Verdana", Font.BOLD, 18);
-         FontMetrics fontMetrics = this.getFontMetrics(font);
-
-         g2d.setColor(Color.BLACK);
-         g2d.setFont(font);
-         g2d.drawString(message,
-                 (Commons.WIDTH - fontMetrics.stringWidth(a)) / 2,
-                 Commons.WIDTH / 2);
-         
->>>>>>> ef02dce76b2bbc9adcc731498f2815e12cc08ea2
+        		 Commons.HEIGHT * 11 / 20 - ((int) gv.getVisualBounds().getHeight() / 2)); 
     }
 
     private class TAdapter extends KeyAdapter {
@@ -246,10 +219,10 @@ public class Board extends JPanel {
 
         if (ball.getRect().getMaxY() > Commons.BOTTOM_EDGE) {
         	
-        	data[difficulty] = Math.max(bricksDestroyed, data[difficulty]);
-        	saveData();
-        	stopMusic();
-        	playGameOverSound();
+            data[difficulty] = Math.max(bricksDestroyed, data[difficulty]);
+            saveData();
+            stopMusic();
+            playGameOverSound();
             stopGame();
             
         }
@@ -261,11 +234,7 @@ public class Board extends JPanel {
                 j++;
                 bricksDestroyed++;
                 data[TOTAL_BRICKS_DESTROYED]++;
-<<<<<<< HEAD
                 playBrickCollisionSound();
-=======
-                playEatAppleSound();
->>>>>>> ef02dce76b2bbc9adcc731498f2815e12cc08ea2
                 
             }
 
@@ -274,23 +243,14 @@ public class Board extends JPanel {
                 message = "Victory";
                 data[difficulty] = Math.max(bricksDestroyed, data[difficulty]);
                 saveData();
-<<<<<<< HEAD
                 playGameWinSound();
-=======
-                playEatAppleSound();
-                playGameOverSound();
->>>>>>> ef02dce76b2bbc9adcc731498f2815e12cc08ea2
                 stopGame();
             }
         }
 
         if ((ball.getRect()).intersects(paddle.getRect())) {
         	
-<<<<<<< HEAD
-        	playBrickCollisionSound()
-=======
-        	playEatAppleSound();
->>>>>>> ef02dce76b2bbc9adcc731498f2815e12cc08ea2
+        	playPaddleCollisionSound()
             int paddleLPos = (int) paddle.getRect().getMinX();
             int ballLPos = (int) ball.getRect().getMinX();
 
@@ -334,10 +294,6 @@ public class Board extends JPanel {
 
             if ((ball.getRect()).intersects(bricks[i].getRect())) {
             	
-<<<<<<< HEAD
-=======
-            	playEatAppleSound();
->>>>>>> ef02dce76b2bbc9adcc731498f2815e12cc08ea2
                 int ballLeft = (int) ball.getRect().getMinX();
                 int ballHeight = (int) ball.getRect().getHeight();
                 int ballWidth = (int) ball.getRect().getWidth();
@@ -379,23 +335,15 @@ public class Board extends JPanel {
             gameOverSound = AudioSystem.getClip();
             gameOverSound.open(audioIn);
 
-<<<<<<< HEAD
             url = this.getClass().getClassLoader().getResource("sound/BrickCollission.wav");
             audioIn = AudioSystem.getAudioInputStream(url);
             brickCollisionSound = AudioSystem.getClip();
             brickCollisionSound.open(audioIn);
-=======
-            url = this.getClass().getClassLoader().getResource("sound/eatApple.wav");
-            audioIn = AudioSystem.getAudioInputStream(url);
-            eatAppleSound = AudioSystem.getClip();
-            eatAppleSound.open(audioIn);
->>>>>>> ef02dce76b2bbc9adcc731498f2815e12cc08ea2
 
             url = this.getClass().getClassLoader().getResource("sound/gameMusic.wav");
             audioIn = AudioSystem.getAudioInputStream(url);
             gameMusicSound = AudioSystem.getClip();
             gameMusicSound.open(audioIn);
-<<<<<<< HEAD
             
             url = this.getClass().getClassLoader().getResource("sound/gameWin.wav");
             audioIn = AudioSystem.getAudioInputStream(url);
@@ -411,8 +359,6 @@ public class Board extends JPanel {
             audioIn = AudioSystem.getAudioInputStream(url);
             wallCollisionSound = AudioSystem.getClip();
             wallCollisionSound.open(audioIn);
-=======
->>>>>>> ef02dce76b2bbc9adcc731498f2815e12cc08ea2
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
         }
     }
@@ -431,7 +377,6 @@ public class Board extends JPanel {
         gameOverSound.setMicrosecondPosition(0);
         gameOverSound.start();
     }
-<<<<<<< HEAD
     
     public void playGameWinSound() {
         gameWinSound.setMicrosecondPosition(0);
@@ -451,12 +396,6 @@ public class Board extends JPanel {
     public void playWallCollisionSound() {
     	wallCollisionSound.setMicrosecondPosition(0);
     	wallCollisionSound.start();
-=======
-
-    public void playEatAppleSound() {
-        eatAppleSound.setMicrosecondPosition(0);
-        eatAppleSound.start();
->>>>>>> ef02dce76b2bbc9adcc731498f2815e12cc08ea2
     }
     
     public void loadData() {
