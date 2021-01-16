@@ -72,7 +72,7 @@ public class Board extends JPanel {
 
 	
 	int score = 0; 
-	
+	Clip gameMusicSound;
 	
 	public Board(int n_of_bricks, int period, int difficulty) {
 	loadData();
@@ -81,6 +81,20 @@ public class Board extends JPanel {
 	this.difficulty = difficulty;
         initBoard();
         //initSounds();
+        try {
+        	//Clip gameMusicSound;
+            URL url = this.getClass().getClassLoader().getResource("sounds/gameMusic.wav");
+            AudioInputStream audioIn;
+        	audioIn = AudioSystem.getAudioInputStream(url);
+			gameMusicSound = AudioSystem.getClip();
+			gameMusicSound.open(audioIn);
+			gameMusicSound.start();
+	        gameMusicSound.loop(Clip.LOOP_CONTINUOUSLY);
+
+		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     private void initBoard() {
@@ -123,13 +137,13 @@ public class Board extends JPanel {
         super.paintComponent(g);
 
         var g2d = (Graphics2D) g;
-
+        
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY);
-
+        g.drawString("Score: "+ score, 10, 15);
         if (inGame) {
 
             drawObjects(g2d);
@@ -227,7 +241,8 @@ public class Board extends JPanel {
     }
 
     private void stopGame() {
-
+    	
+    	
         inGame = false;
         timer.stop();
     }
@@ -236,7 +251,22 @@ public class Board extends JPanel {
 
         if (ball.getRect().getMaxY() > BoardState.BOTTOM_EDGE) {
         	
-            
+        	
+        	gameMusicSound.stop();
+        	try {
+            	Clip gameOverSound;
+                URL url = this.getClass().getClassLoader().getResource("sounds/gameOver.wav");
+                AudioInputStream audioIn;
+            	audioIn = AudioSystem.getAudioInputStream(url);
+            	gameOverSound = AudioSystem.getClip();
+            	gameOverSound.open(audioIn);
+            	gameOverSound.start();
+            	//gameOverSound.loop(Clip.LOOP_CONTINUOUSLY);
+
+    		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
             saveData();
             //Foobar.stopMusic();
             //playGameOverSound();
@@ -249,6 +279,7 @@ public class Board extends JPanel {
             if (bricks[i].isDestroyed()) {
 
                 j++;
+                
 
                 //bricksDestroyed++;
                 //playBrickCollisionSound();
@@ -258,7 +289,21 @@ public class Board extends JPanel {
             if (j == n_of_bricks) {
 
                 message = "Victory";
+                gameMusicSound.stop();
+                try {
+                	Clip gameWinSound;
+                    URL url = this.getClass().getClassLoader().getResource("sounds/gameWin.wav");
+                    AudioInputStream audioIn;
+                	audioIn = AudioSystem.getAudioInputStream(url);
+        			gameWinSound = AudioSystem.getClip();
+        			gameWinSound.open(audioIn);
+        			gameWinSound.start();
+        	        //gameWinSound.loop(Clip.LOOP_CONTINUOUSLY);
 
+        		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
                 
                 //data[difficulty] = Math.max(bricksDestroyed, data[difficulty]);
                 saveData();
@@ -307,6 +352,21 @@ public class Board extends JPanel {
                 ball.setXDir(1);
                 ball.setYDir(-1);
             }
+            
+            try {
+            	Clip paddleCollisionSound;
+                URL url = this.getClass().getClassLoader().getResource("sounds/PaddleCollision.wav");
+                AudioInputStream audioIn;
+            	audioIn = AudioSystem.getAudioInputStream(url);
+            	paddleCollisionSound = AudioSystem.getClip();
+            	paddleCollisionSound.open(audioIn);
+            	paddleCollisionSound.setMicrosecondPosition(0);
+            	paddleCollisionSound.start();
+
+    		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
         }
 
         for (int i = 0; i < n_of_bricks; i++) {
@@ -344,6 +404,20 @@ public class Board extends JPanel {
                     bricks[i].setDestroyed(true);
                     score += 5 * (difficulty+1);
                     ++bricksDestroyed;
+                    try {
+                    	Clip brickCollisionSound;
+                        URL url = this.getClass().getClassLoader().getResource("sounds/BrickCollision.wav");
+                        AudioInputStream audioIn;
+                    	audioIn = AudioSystem.getAudioInputStream(url);
+                    	brickCollisionSound = AudioSystem.getClip();
+                    	brickCollisionSound.open(audioIn);
+                    	brickCollisionSound.setMicrosecondPosition(0);
+                    	brickCollisionSound.start();
+
+            		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+            			// TODO Auto-generated catch block
+            			e.printStackTrace();
+            		}
                 }
             }
         }
